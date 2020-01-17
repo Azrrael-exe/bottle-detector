@@ -2,10 +2,18 @@
 
 class SoundSensor : public Sensor {
     public:
-        SoundSensor(int trigger, int echo, int threshold, long watch_dog = 100):Sensor(trigger, watch_dog){
+        SoundSensor(int trigger, 
+                    int echo, 
+                    int threshold_min, 
+                    int threshold_max, 
+                    long distance_factor, 
+                    long watch_dog
+                    ):Sensor(trigger, watch_dog){
             this->trigger = trigger;
             this->echo = echo;
-            this->threshold = threshold;
+            this->threshold_min = threshold_min;
+            this->threshold_max = threshold_max;
+            this->distance_factor = distance_factor;
             digitalWrite(this->trigger, LOW);
         };
         bool read();
@@ -13,8 +21,10 @@ class SoundSensor : public Sensor {
     private:
         uint8_t trigger;
         uint8_t echo;
-        int threshold;
+        int threshold_min;
+        int threshold_max;
         long distance;
+        long distance_factor;
 };
 
 bool SoundSensor::read(){
@@ -23,9 +33,9 @@ bool SoundSensor::read(){
     digitalWrite(this->trigger, LOW);
 
     long t = pulseIn(this->echo, HIGH);
-    this->distance = t / 59;
-    
-    return this->distance < threshold;
+    this->distance = t / this->distance_factor;
+
+    return ((this->distance >= this->threshold_min) && (this->distance <= threshold_max));
 }
 
 long SoundSensor::getDistance(){

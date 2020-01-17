@@ -1,17 +1,16 @@
 namespace PIXEL {
 
-    const uint8_t NUM_PIXELS = 8;
+    const uint8_t NUM_PIXELS = 16;
     const uint16_t PERIOD = 100;
     
 }
-
 
 namespace IO {
     
     // const uint8_t SENSOR_INPUT = 2;
     const uint8_t LED_OUTPUT = 7;
-    const uint8_t TRIGGER = 2;
-    const uint8_t ECHO = 3;
+    const uint8_t TRIGGER = 4;
+    const uint8_t ECHO = 5;
 
     void init(){
         // pinMode(SENSOR_INPUT, INPUT);
@@ -34,5 +33,14 @@ namespace COM {
 
     const uint16_t STATUS_OK = 200;
     const uint16_t STATUS_FAIL = 400;
+
+}
+
+namespace US {
+
+    const uint8_t THRESHOLD_MIN = 5;
+    const uint8_t THRESHOLD_MAX = 25;
+    const long DISTANCE_FACTOR = 59;
+    const uint8_t WATCHDOG = 100;
 
 }
