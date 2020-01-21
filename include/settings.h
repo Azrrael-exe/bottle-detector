@@ -1,3 +1,5 @@
+/// ---- Version 1.0.1 ----
+
 namespace PIXEL {
 
     const uint8_t NUM_PIXELS = 16;
