@@ -51,6 +51,9 @@ void loop(){
         if(input.hasKey(COM::COMMAND_KEY)) {
             remote_command = input.getData(COM::COMMAND_KEY);
         }
+        else {
+            remote_command = COM::PASS;
+        }
         if(input.hasKey(COM::VALUE_KEY)) {
             remote_value = input.getData(COM::VALUE_KEY);
         }
