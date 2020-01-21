@@ -16,7 +16,13 @@
 #define RESPONSE_TIMEOUT 30000
 
 Light pixels = Light(PIXEL::NUM_PIXELS, IO::LED_OUTPUT);
-SoundSensor sensor = SoundSensor(IO::TRIGGER, IO::ECHO, 25, 500);
+SoundSensor sensor = SoundSensor(
+        IO::TRIGGER, 
+        IO::ECHO, 
+        US::THRESHOLD_MIN, 
+        US::THRESHOLD_MAX,
+        US::DISTANCE_FACTOR,
+        US::WATCHDOG);
 
 DataPack input = DataPack();
 
@@ -32,20 +38,25 @@ void setup(){
     IO::init();
     pixels.begin();
     pixels.clear();
+    for(int i = 0; i < PIXEL::NUM_PIXELS; i++) {
+        pixels.setPixelColor(i, 0x00003200);
+        pixels.show();
+        delay(100);
+    }
+    pixels.clear();
 }
 
 void loop(){
-    if(input.available(Serial)){
+    if(input.available(Serial)) {
         if(input.hasKey(COM::COMMAND_KEY)) {
             remote_command = input.getData(COM::COMMAND_KEY);
         }
-        if(input.hasKey(COM::VALUE_KEY)){
+        if(input.hasKey(COM::VALUE_KEY)) {
             remote_value = input.getData(COM::VALUE_KEY);
         }
     }
 
     if(device_status == WAITING_FOR_BOTTLE && (sensor.hasChanged() && sensor.getStatus())) {
-        Serial.println(sensor.getDistance());
         pixels.setAll(WHITE);
         device_status = READING_BOTTLE;
         device_timer = millis();
@@ -68,10 +79,10 @@ void loop(){
         }
     }
 
-    else if(device_status == WAITING_RESPONSE && (remote_command == COM::RESPONSE || millis() - device_timer > RESPONSE_TIMEOUT)){
+    else if(device_status == WAITING_RESPONSE && (remote_command == COM::RESPONSE || millis() - device_timer > RESPONSE_TIMEOUT)) {
         device_status = DONE;
         device_timer = millis();
-        if(remote_value == COM::STATUS_OK){
+        if(remote_value == COM::STATUS_OK) {
             pixels.setAll(0x00003200);
         }
         else {
@@ -80,7 +91,7 @@ void loop(){
         
     }
     
-    else if(device_status == DONE && (millis() - device_timer > COOLDOWN_THRESHOLD)){
+    else if(device_status == DONE && (millis() - device_timer > COOLDOWN_THRESHOLD)) {
         device_status = WAITING_FOR_BOTTLE;
         pixels.clear();
     }
