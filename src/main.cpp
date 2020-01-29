@@ -51,9 +51,6 @@ void loop(){
         if(input.hasKey(COM::COMMAND_KEY)) {
             remote_command = input.getData(COM::COMMAND_KEY);
         }
-        else {
-            remote_command = COM::PASS;
-        }
         if(input.hasKey(COM::VALUE_KEY)) {
             remote_value = input.getData(COM::VALUE_KEY);
         }
@@ -91,7 +88,8 @@ void loop(){
         else {
             pixels.setAll(0x00320000);
         }
-        
+        remote_command = COM::PASS;
+        remote_value = 0x00;
     }
     
     else if(device_status == DONE && (millis() - device_timer > COOLDOWN_THRESHOLD)) {
