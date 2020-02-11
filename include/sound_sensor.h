@@ -24,15 +24,18 @@ class SoundSensor : public Sensor {
         int threshold_min;
         int threshold_max;
         long distance;
-        long distance_factor;
+        float distance_factor;
 };
 
 bool SoundSensor::read(){
+    digitalWrite(this->trigger, LOW);
+    delayMicroseconds(2);
     digitalWrite(this->trigger, HIGH);
     delayMicroseconds(10);
     digitalWrite(this->trigger, LOW);
 
     long t = pulseIn(this->echo, HIGH);
+
     this->distance = t / this->distance_factor;
 
     return ((this->distance >= this->threshold_min) && (this->distance <= threshold_max));
