@@ -1,4 +1,4 @@
-/// ---- Version 1.0.3 ----
+/// ---- Version 1.1.0 ----
 
 namespace PIXEL {
 
@@ -43,6 +43,14 @@ namespace US {
     const uint8_t THRESHOLD_MIN = 0;
     const uint8_t THRESHOLD_MAX = 25;
     const float DISTANCE_FACTOR = 0.016565;
-    const uint8_t WATCHDOG = 500;
+    const uint16_t WATCHDOG = 500;
+
+}
+
+namespace DEBUGING {
+
+    long debug_timer;
+    long debug_sample_rate = 1000; 
+    const bool DISTANCE_LOG = false;
 
 }

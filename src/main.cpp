@@ -96,6 +96,11 @@ void loop(){
         device_status = WAITING_FOR_BOTTLE;
         pixels.clear();
     }
-    
+
+    if(DEBUGING::DISTANCE_LOG && (millis() - DEBUGING::debug_timer >= DEBUGING::debug_sample_rate)) {
+        DEBUGING::debug_timer = millis();
+        Serial.println(sensor.getDistance());
+    }
+
     pixels.run();
 }
